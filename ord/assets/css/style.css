@@ -1,0 +1,26 @@
+body {
+    background-color: #f8f9fa;
+}
+.hero {
+    background: linear-gradient(135deg, #b91d1d, #6e0e0e);
+}
+.card {
+    border-radius: 12px;
+}
+.navbar-brand {
+    font-size: 1.4rem;
+}
+.sidebar a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+}
+.sidebar a:hover, .sidebar a.active {
+    background-color: #b91d1d;
+}
+.stat-card {
+    border-left: 5px solid #b91d1d;
+}
