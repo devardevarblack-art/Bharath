@@ -1,0 +1,220 @@
+<div class="container mt-4">
+  <h3 class="mb-4">Manage Students</h3>
+
+  <!-- ===============================
+       ADD STUDENT FORM
+  ================================ -->
+  <div class="card mb-4 p-3">
+    <div class="card-header">Add New Student</div>
+    <div class="card-body">
+      <div class="row g-3">
+
+        <!-- Roll No -->
+  <div class="col-md-3">
+    <label class="form-label">Roll No</label>
+    <input
+      class="form-control"
+      placeholder="Enter Roll No"
+      [(ngModel)]="roll_no"
+    >
+  </div>
+
+        <!-- Student Name -->
+        <div class="col-md-4">
+          <label class="form-label">Student Name</label>
+          <input class="form-control" placeholder="Enter name" [(ngModel)]="student_name">
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="col-md-3">
+          <label class="form-label">Date of Birth</label>
+          <input type="date" class="form-control" [(ngModel)]="dob">
+        </div>
+
+        <!-- Username -->
+        <div class="col-md-3">
+          <label class="form-label">Username</label>
+          <input class="form-control" placeholder="Enter username" [(ngModel)]="username">
+        </div>
+
+        <!-- Password -->
+        <div class="col-md-2">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" placeholder="Password" [(ngModel)]="password">
+        </div>
+
+      </div>
+
+      <div class="row g-3 mt-3">
+        <!-- Department -->
+        <div class="col-md-6">
+          <label class="form-label">Department</label>
+          <select class="form-select" [(ngModel)]="dept_id">
+            <option value="">Select Department</option>
+            @for (dept of departments(); track dept.dept_id) {
+            <option [value]="dept.dept_id">{{dept.dept_name}}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Class -->
+        <div class="col-md-6">
+          <label class="form-label">Class</label>
+          <select class="form-select" [(ngModel)]="class_id">
+            <option value="">Select Class</option>
+            @for (cls of classes(); track cls.class_id) {
+            @if (cls.dept_id == dept_id) {
+            <option [value]="cls.class_id">{{cls.class_name}}</option>
+            }
+            }
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-success mt-3" (click)="addStudent()">
+        Add Student
+      </button>
+    </div>
+  </div>
+  <input type="search" class="form-control mb-3" placeholder="Search By student Name or department"
+    [(ngModel)]="searchText" />
+  <!-- ===============================
+       STUDENT LIST
+  ================================ -->
+
+  <table class="table table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>SI.No</th>
+        <th>ST:ID</th>
+        <th>Roll No</th>
+        <th>Student Name</th>
+        <th>dept</th>
+        <th>username</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (s of students()|search:searchText; track s.student_id ; let i=$index) {
+      <tr>
+        <td>{{i+1}}</td>
+        <td>{{ s.roll_no }}</td>
+        <td>{{s.student_id}}</td>
+        <td>{{s.student_name}}</td>
+         <td>{{s.dept_name}}</td>
+         <td>{{s.username}}</td>
+        <td>
+          <div class="d-flex justify-content-around align-items-center ">
+            <button class="btn btn-secondary btn-sm" (click)="openEditStudent(s)">
+              Edit
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="deleteStudent(s.student_id)">
+              Delete
+            </button>
+          </div>
+
+        </td>
+      </tr>
+      }@empty {
+      <tr class="alert alert-info">
+        No students found.
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ===============================
+     EDIT STUDENT MODAL
+================================ -->
+@if(showEditModal){
+<div class="modal fade show d-block">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Student</h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+
+      <form [formGroup]="editForm" (ngSubmit)="updateStudent()">
+
+        <div class="modal-body">
+
+          <div class="row g-3">
+
+            <div class="col-md-6">
+  <label>Roll No</label>
+  <input
+    class="form-control"
+    formControlName="roll_no"
+  >
+</div>
+
+
+            <div class="col-md-6">
+              <label>Student Name</label>
+              <input class="form-control" formControlName="student_name">
+            </div>
+
+            <div class="col-md-6">
+              <label>DOB</label>
+              <input type="date" class="form-control" formControlName="dob">
+            </div>
+
+            <div class="col-md-6">
+              <label>Username</label>
+              <input class="form-control" formControlName="username">
+            </div>
+
+            <div class="col-md-6">
+              <label>Password</label>
+              <input type="password" class="form-control" formControlName="password">
+            </div>
+
+            <div class="col-md-6">
+              <label>Department</label>
+              <select class="form-select" formControlName="dept_id">
+                <option value="">Select Department</option>
+                @for (dept of departments(); track dept.dept_id) {
+                <option [value]="dept.dept_id">
+                  {{ dept.dept_name }}
+                </option>
+                }
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label>Class</label>
+              <select class="form-select" formControlName="class_id">
+                <option value="">Select Class</option>
+                @for (cls of classes(); track cls.class_id) {
+                @if (cls.dept_id == editForm.value.dept_id) {
+                <option [value]="cls.class_id">
+                  {{ cls.class_name }}
+                </option>
+                }
+                }
+              </select>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">
+            Cancel
+          </button>
+          <button class="btn btn-success" [disabled]="editForm.invalid">
+            Update Student
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show"></div>
+}

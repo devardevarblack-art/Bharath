@@ -1,0 +1,17 @@
+<div class="container">
+  <h3>Mark Attendance</h3>
+  <table class="table">
+    <tr ><div class="d-flex align-items-center justify-content-center " >
+      <button class="btn btn-success" (click)="markAllAsPresent()"> Mark All As Present</button>
+    </div></tr>
+    @for(s of students(); track s){
+  <tr >
+      <td>{{s.student_name}}</td>
+      <td>
+        <input type="checkbox" class="form-check-input" [(ngModel)]="s.present">
+      </td>
+    </tr>
+    }
+  </table>
+  <button class="btn btn-success" (click)="submitAttendance()">Submit</button>
+</div>

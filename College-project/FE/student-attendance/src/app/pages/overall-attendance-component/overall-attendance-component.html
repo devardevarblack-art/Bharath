@@ -1,0 +1,56 @@
+<div class="container mt-4">
+  <h3 class="mb-3">Overall Attendance Report</h3>
+
+  <!-- Date Filters -->
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label>From Date</label>
+      <input type="date" class="form-control" [(ngModel)]="fromDate">
+    </div>
+
+    <div class="col-md-4">
+      <label>To Date</label>
+      <input type="date" class="form-control" [(ngModel)]="toDate">
+    </div>
+
+    <div class="col-md-4 d-flex align-items-end">
+      <button class="btn btn-primary w-100" (click)="fetchAttendanceReport()">
+        Fetch Report
+      </button>
+    </div>
+  </div>
+
+  <!-- Attendance Table -->
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>Student</th>
+        <th>Department</th>
+        <th>Class</th>
+        <th>Total Hours</th>
+        <th>Present</th>
+        <th>Attendance %</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let s of summaryList()">
+        <td>{{ s.student_name }}</td>
+        <td>{{ s.dept_name }}</td>
+        <td>{{ s.class_name }}</td>
+        <td>{{ s.total_hours }}</td>
+        <td>{{ s.present_hours }}</td>
+        <td>
+          <span
+            [ngClass]="{'text-success': s.attendance_percentage >= 75,'text-danger': s.attendance_percentage < 75}">
+            {{ s.attendance_percentage }}%
+          </span>
+        </td>
+      </tr>
+
+      <tr *ngIf="summaryList.length === 0">
+        <td colspan="6" class="text-center">No data available</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

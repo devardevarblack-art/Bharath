@@ -1,0 +1,14 @@
+<div class="container">
+  <h3>Attendance Report</h3>
+
+  <table class="table table-bordered">
+    @for(r of report();track r){
+    <tr>
+      <td class="fw-bold" >{{r.teacher_name}}</td>
+      <td>{{r.attendance_date|date}}</td>
+      <td>{{r.hour_name}}</td>
+      <td class="fw-bold" >{{r.status}}</td>
+    </tr>
+    }
+  </table>
+</div>

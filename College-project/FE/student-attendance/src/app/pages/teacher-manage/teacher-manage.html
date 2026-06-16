@@ -1,0 +1,178 @@
+<div class="container mt-4">
+  <h3 class="mb-4">Manage Teachers</h3>
+
+  <!-- ===============================
+       ADD TEACHER FORM
+  ================================ -->
+  <div class="card mb-4 p-3">
+    <div class="card-header">Add New Teacher</div>
+    <div class="card-body">
+      <div class="row g-3">
+
+        <!-- Name -->
+        <div class="col-md-3">
+          <label class="form-label">Teacher Name</label>
+          <input class="form-control" placeholder="Name" [(ngModel)]="teacher_name">
+        </div>
+
+        <!-- Username -->
+        <div class="col-md-3">
+          <label class="form-label">Username</label>
+          <input class="form-control" placeholder="Username" [(ngModel)]="username">
+        </div>
+
+        <!-- Password -->
+        <div class="col-md-2">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" placeholder="Password" [(ngModel)]="password">
+        </div>
+
+        <!-- Years of Experience -->
+        <div class="col-md-2">
+          <label class="form-label">Experience (Years)</label>
+          <input type="number" class="form-control" [(ngModel)]="years_of_experience">
+        </div>
+
+        <!-- Subject -->
+        <div class="col-md-2">
+          <label class="form-label">Specialised Subject</label>
+          <input class="form-control" placeholder="Subject" [(ngModel)]="specialised_subject">
+        </div>
+
+      </div>
+
+      <div class="row g-3 mt-3">
+        <!-- Department -->
+        <div class="col-md-4">
+          <label class="form-label">Department</label>
+          <select class="form-select" [(ngModel)]="dept_id">
+            <option value="">Select Department</option>
+            @for (d of departments(); track d.dept_id) {
+            <option [value]="d.dept_id">{{ d.dept_name }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <button class="btn btn-success mt-3" (click)="addTeacher()">Add Teacher</button>
+    </div>
+  </div>
+
+  <!-- ===============================
+       TEACHER LIST
+  ================================ -->
+  <input type="search" class="form-control mb-3" placeholder="Search By teacher Name or department"
+    [(ngModel)]="searchText" />
+  <table class="table table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Dept</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (t of teachers()|search:searchText; track t.teacher_id) {
+      <tr>
+        <td>{{ t.teacher_id }}</td>
+        <td>{{ t.teacher_name }}</td>
+        <td>{{ t.username }}</td>
+        <td>{{ t.dept_name }}</td>
+        <td>
+          <div class="d-flex justify-content-around align-items-center ">
+            <button class="btn btn-secondary btn-sm" (click)="openEditTeacher(t)">
+              Edit
+            </button>
+
+            <button class="btn btn-danger btn-sm" (click)="deleteTeacher(t.teacher_id)">
+              Delete
+            </button>
+          </div>
+        </td>
+      </tr>
+      }@empty {
+      <tr>
+        <div class="alert alert-info">
+          No teachers found.
+        </div>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<!-- ===============================
+     EDIT TEACHER MODAL
+================================ -->
+@if(showEditTeacherModal){
+<div class="modal fade show d-block">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Teacher</h5>
+        <button type="button" class="btn-close" (click)="closeTeacherModal()"></button>
+      </div>
+
+      <form [formGroup]="editTeacherForm" (ngSubmit)="updateTeacher()">
+
+        <div class="modal-body">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label>Teacher Name</label>
+              <input class="form-control" formControlName="teacher_name">
+            </div>
+
+            <div class="col-md-6">
+              <label>Experience (Years)</label>
+              <input type="number" class="form-control" formControlName="years_of_experience">
+            </div>
+
+            <div class="col-md-6">
+              <label>Specialised Subject</label>
+              <input class="form-control" formControlName="specialised_subject">
+            </div>
+
+            <div class="col-md-6">
+              <label>Username</label>
+              <input class="form-control" formControlName="username">
+            </div>
+
+            <div class="col-md-6">
+              <label>Password</label>
+              <input type="password" class="form-control" formControlName="password">
+            </div>
+
+            <div class="col-md-6">
+              <label>Department</label>
+              <select class="form-select" formControlName="dept_id">
+                <option value="">Select Department</option>
+                @for (dept of departments(); track dept.dept_id) {
+                <option [value]="dept.dept_id">
+                  {{ dept.dept_name }}
+                </option>
+                }
+              </select>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeTeacherModal()">
+            Cancel
+          </button>
+          <button class="btn btn-success" [disabled]="editTeacherForm.invalid">
+            Update Teacher
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade show"></div>
+}

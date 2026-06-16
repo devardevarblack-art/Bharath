@@ -1,0 +1,49 @@
+<div class="center-card">
+  <h3>{{isStudent()?'Student':'Teacher'}} Login</h3>
+
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+    <!-- Username -->
+    <input
+      class="form-control mb-1"
+      formControlName="username"
+      placeholder="Username"
+    />
+
+    <!-- Username Errors -->
+    <div class="text-danger small mb-2"
+         *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
+      <div *ngIf="loginForm.get('username')?.errors?.['required']">
+        Username is required
+      </div>
+    </div>
+
+    <!-- Password -->
+    <input
+      type="password"
+      class="form-control mb-1"
+      formControlName="password"
+      placeholder="Password"
+    />
+
+    <!-- Password Errors -->
+    <div class="text-danger small mb-2"
+         *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+      <div *ngIf="loginForm.get('password')?.errors?.['required']">
+        Password is required
+      </div>
+    </div>
+
+    <!-- API Error Message -->
+    <div class="alert alert-danger mt-3" *ngIf="loginError">
+      {{ loginError }}
+    </div>
+
+    <button class="btn btn-primary mt-3"
+            type="submit"
+            [disabled]="loginForm.invalid">
+      Login
+    </button>
+
+  </form>
+</div>
